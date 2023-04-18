@@ -1,4 +1,4 @@
-package planetmap
+package planetarymap
 
 const (
 	North string = "N"
