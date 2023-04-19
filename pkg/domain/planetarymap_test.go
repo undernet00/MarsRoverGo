@@ -1,4 +1,4 @@
-package planetarymap
+package rover
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -14,7 +14,7 @@ func TestConstructor(t *testing.T) {
 	assert.Equal(t, 3, len(pm.mapGrid[0]), "Expected 3 and got %v", len(pm.mapGrid[0]))
 }
 
-func TestIsOut(t *testing.T) {
+func TestIsValid(t *testing.T) {
 
 	ass := assert.New(t)
 
@@ -202,7 +202,7 @@ func TestIsOut(t *testing.T) {
 			pm := NewPlanetaryMap(tt.planetaryMapWidth, tt.planetaryMapHeight)
 
 			// when
-			result := pm.IsOut(tt.xCoordinate, tt.yCoordinate)
+			result := pm.IsValid(tt.xCoordinate, tt.yCoordinate)
 
 			//then
 			tt.asserts(tt.expectedResult, result)

@@ -1,14 +1,7 @@
-package planetarymap
-
-const (
-	North string = "N"
-	East  string = "E"
-	South string = "S"
-	West  string = "W"
-)
+package rover
 
 type PlanetaryMap interface {
-	IsOut(xcoord, ycoord int) bool
+	IsValid(xcoord, ycoord int) bool
 }
 
 type Map struct {
@@ -17,7 +10,7 @@ type Map struct {
 	mapGrid [][]int
 }
 
-func (m *Map) IsOut(xcoord, ycoord int) bool {
+func (m *Map) IsValid(xcoord, ycoord int) bool {
 	if xcoord < 0 || xcoord >= len(m.mapGrid) {
 		return false
 	}
@@ -30,6 +23,8 @@ func (m *Map) IsOut(xcoord, ycoord int) bool {
 }
 
 func NewPlanetaryMap(width, height int) *Map {
+	//TODO: Validate parameters
+
 	newMap := Map{
 		width:  width,
 		height: height,
