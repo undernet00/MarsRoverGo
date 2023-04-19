@@ -111,6 +111,90 @@ func TestIsOut(t *testing.T) {
 
 			},
 		},
+		{
+			name:               "Should be In when top right corner",
+			planetaryMapWidth:  4,
+			planetaryMapHeight: 4,
+			xCoordinate:        3,
+			yCoordinate:        3,
+			expectedResult:     true,
+			asserts: func(expected, result bool) {
+
+				// result
+				ass.Equal(expected, result)
+
+			},
+		},
+		{
+			name:               "Should be Out when right of top right corner",
+			planetaryMapWidth:  4,
+			planetaryMapHeight: 4,
+			xCoordinate:        4,
+			yCoordinate:        3,
+			expectedResult:     false,
+			asserts: func(expected, result bool) {
+
+				// result
+				ass.Equal(expected, result)
+
+			},
+		},
+		{
+			name:               "Should be Out when above of top right corner",
+			planetaryMapWidth:  4,
+			planetaryMapHeight: 4,
+			xCoordinate:        3,
+			yCoordinate:        4,
+			expectedResult:     false,
+			asserts: func(expected, result bool) {
+
+				// result
+				ass.Equal(expected, result)
+
+			},
+		},
+		{
+			name:               "Should be In when top left corner",
+			planetaryMapWidth:  4,
+			planetaryMapHeight: 4,
+			xCoordinate:        0,
+			yCoordinate:        3,
+			expectedResult:     true,
+			asserts: func(expected, result bool) {
+
+				// result
+				ass.Equal(expected, result)
+
+			},
+		},
+		{
+			name:               "Should be Out when left of top left corner",
+			planetaryMapWidth:  4,
+			planetaryMapHeight: 4,
+			xCoordinate:        -1,
+			yCoordinate:        3,
+			expectedResult:     false,
+			asserts: func(expected, result bool) {
+
+				// result
+				ass.Equal(expected, result)
+
+			},
+		},
+		{
+			name:               "Should be Out when above of top left corner",
+			planetaryMapWidth:  4,
+			planetaryMapHeight: 4,
+			xCoordinate:        0,
+			yCoordinate:        4,
+			expectedResult:     false,
+			asserts: func(expected, result bool) {
+
+				// result
+				ass.Equal(expected, result)
+
+			},
+		},
 	}
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
