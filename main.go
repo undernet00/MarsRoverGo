@@ -9,4 +9,5 @@ func main() {
 	p := planetarymap.NewPlanetaryMap(4, 3)
 
 	fmt.Println(p)
+
 }
