@@ -34,7 +34,6 @@ func (c Command) IsValid(command string) bool {
 }
 
 type Rover struct {
-	listOfCommands     string
 	currentOrientation CardinalPoint
 	currentX           int
 	currentY           int

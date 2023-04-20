@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestConstructor(t *testing.T) {
+func TestMapConstructor(t *testing.T) {
 
 	pm := NewPlanetaryMap(4, 3)
 
