@@ -7,11 +7,19 @@ import (
 
 func TestMapConstructor(t *testing.T) {
 
+	pm := NewMap(4, 3)
+
+	assert.NotNil(t, pm, "The new map method returned nil")
+	assert.Equal(t, 4, len(pm.mapGrid), "Expected 4 and got %v", len(pm.mapGrid))
+	assert.Equal(t, 3, len(pm.mapGrid[0]), "Expected 3 and got %v", len(pm.mapGrid[0]))
+}
+
+func TestPlanetaryMapConstructor(t *testing.T) {
+
 	pm := NewPlanetaryMap(4, 3)
 
 	assert.NotNil(t, pm, "The new planetary map method returned nil")
-	assert.Equal(t, 4, len(pm.mapGrid), "Expected 4 and got %v", len(pm.mapGrid))
-	assert.Equal(t, 3, len(pm.mapGrid[0]), "Expected 3 and got %v", len(pm.mapGrid[0]))
+
 }
 
 func TestIsValid(t *testing.T) {
@@ -198,8 +206,10 @@ func TestIsValid(t *testing.T) {
 	}
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
+
 			// given
-			pm := NewPlanetaryMap(tt.planetaryMapWidth, tt.planetaryMapHeight)
+			pmPtr := NewPlanetaryMap(tt.planetaryMapWidth, tt.planetaryMapHeight)
+			pm := *pmPtr
 
 			// when
 			result := pm.IsValid(tt.xCoordinate, tt.yCoordinate)

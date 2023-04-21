@@ -22,9 +22,14 @@ func (m *Map) IsValid(xcoord, ycoord int) bool {
 	return true
 }
 
-func NewPlanetaryMap(width, height int) *Map {
+func NewPlanetaryMap(width, height int) *PlanetaryMap {
 	//TODO: Validate parameters
+	m := NewMap(width, height)
+	newPm := PlanetaryMap(m)
+	return &newPm
+}
 
+func NewMap(width, height int) *Map {
 	newMap := Map{
 		width:  width,
 		height: height,

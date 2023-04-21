@@ -28,9 +28,9 @@ const (
 	Right   Command = "R"
 )
 
-func (c Command) IsValid(command string) bool {
-	anotherCommand := Command(command)
-	return anotherCommand == Advance || anotherCommand == Left || anotherCommand == Right
+func (c Command) IsValid() bool {
+
+	return c == Advance || c == Left || c == Right
 }
 
 type Rover struct {
@@ -64,7 +64,7 @@ func convertStringToCommands(listOfCommands string) ([]Command, error) {
 
 	for _, v := range commands {
 		command := Command(v)
-		if !command.IsValid(v) {
+		if !command.IsValid() {
 			return nil, errors.New(fmt.Sprintf("%v is not a valid command\n", command))
 		}
 
