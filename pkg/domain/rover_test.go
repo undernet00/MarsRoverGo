@@ -227,3 +227,124 @@ func TestConvertStringToCommands(t *testing.T) {
 	}
 
 }
+
+func TestTurnRight(t *testing.T) {
+	//Given
+	mp := NewPlanetaryMap(7, 7)
+	rover := NewRover(*mp)
+	rover.currentOrientation = North
+
+	//When
+	rover.TurnRight()
+
+	//Then
+	assert.Equal(t, East, rover.currentOrientation)
+
+	//When
+	rover.TurnRight()
+
+	//Then
+	assert.Equal(t, South, rover.currentOrientation)
+
+	//When
+	rover.TurnRight()
+
+	//Then
+	assert.Equal(t, West, rover.currentOrientation)
+
+	//When
+	rover.TurnRight()
+
+	//Then
+	assert.Equal(t, North, rover.currentOrientation)
+
+	//When
+	rover.currentOrientation = ""
+
+	//Then
+	assert.Equal(t, CardinalPoint(""), rover.currentOrientation)
+
+}
+
+func TestTurnLeft(t *testing.T) {
+	//Given
+	mp := NewPlanetaryMap(7, 7)
+	rover := NewRover(*mp)
+	rover.currentOrientation = North
+
+	//When
+	rover.TurnLeft()
+
+	//Then
+	assert.Equal(t, West, rover.currentOrientation)
+
+	//When
+	rover.TurnLeft()
+
+	//Then
+	assert.Equal(t, South, rover.currentOrientation)
+
+	//When
+	rover.TurnLeft()
+
+	//Then
+	assert.Equal(t, East, rover.currentOrientation)
+
+	//When
+	rover.TurnLeft()
+
+	//Then
+	assert.Equal(t, North, rover.currentOrientation)
+
+	//When
+	rover.currentOrientation = ""
+
+	//Then
+	assert.Equal(t, CardinalPoint(""), rover.currentOrientation)
+
+}
+
+func TestFormatOutput(t *testing.T) {
+
+	pMap := NewPlanetaryMap(6, 6)
+
+	testCases := []struct {
+		name                    string
+		planetaryMap            *PlanetaryMap
+		roverCurrentX           int
+		roverCurrentY           int
+		roverCurrentOrientation CardinalPoint
+
+		asserts func(output string, rover *Rover)
+	}{
+		{
+			name:                    "Standard output",
+			planetaryMap:            pMap,
+			roverCurrentX:           3,
+			roverCurrentY:           2,
+			roverCurrentOrientation: South,
+
+			asserts: func(output string, rover *Rover) {
+				assert.Equal(t, "True, N, (3,2)", rover.formatOutput(false))
+
+			},
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			// given
+			rv := NewRover(*tt.planetaryMap)
+			rv.currentX = tt.roverCurrentX
+			rv.currentY = tt.roverCurrentY
+			rv.currentOrientation = tt.roverCurrentOrientation
+
+			// when
+			formattedOutput := rv.formatOutput(rv.navigationMap.IsValid(rv.currentX, rv.currentY))
+
+			//then
+			tt.asserts(formattedOutput, rv)
+
+		})
+	}
+}
