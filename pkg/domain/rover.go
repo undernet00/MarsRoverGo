@@ -77,12 +77,12 @@ func convertStringToCommands(listOfCommands string) ([]Command, error) {
 
 func (r *Rover) Traverse(initialX int, initialY int, initialOrientation CardinalPoint, listOfCommands string) (string, error) {
 
-	if r.navigationMap == nil {
-		return "", errors.New("not a valid map\n")
+	if r == nil {
+		return "", errors.New("Rover was not initialized\n")
 	}
 
 	commands, err := convertStringToCommands(listOfCommands)
-	if err == nil {
+	if err != nil {
 		return "", err
 	}
 

@@ -542,3 +542,136 @@ func TestAdvance(t *testing.T) {
 		})
 	}
 }
+
+func TestNavigate(t *testing.T) {
+
+	pMap := NewPlanetaryMap(4, 5)
+
+	testCases := []struct {
+		name               string
+		initialX           int
+		initialY           int
+		initialOrientation CardinalPoint
+		listOfCommands     string
+		asserts            func(string, error)
+		planetaryMap       PlanetaryMap
+	}{
+		{
+			name:               "No planetary map present",
+			initialX:           0,
+			initialY:           0,
+			initialOrientation: East,
+			listOfCommands:     "",
+			planetaryMap:       nil,
+			asserts: func(s string, err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:               "Empty list of commands",
+			initialX:           0,
+			initialY:           0,
+			initialOrientation: East,
+			listOfCommands:     "",
+			planetaryMap:       *pMap,
+			asserts: func(s string, err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:               "Invalid x coordinate",
+			initialX:           4,
+			initialY:           0,
+			initialOrientation: North,
+			listOfCommands:     "ALR",
+			planetaryMap:       *pMap,
+			asserts: func(s string, err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:               "Invalid y coordinate",
+			initialX:           2,
+			initialY:           5,
+			initialOrientation: North,
+			listOfCommands:     "ALR",
+			planetaryMap:       *pMap,
+			asserts: func(s string, err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:               "Invalid initial orientations",
+			initialX:           0,
+			initialY:           0,
+			initialOrientation: "Wesr",
+			listOfCommands:     "ALR",
+			planetaryMap:       *pMap,
+			asserts: func(output string, err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:               "Short trip 1",
+			initialX:           0,
+			initialY:           0,
+			initialOrientation: East,
+			listOfCommands:     "AALARA",
+			planetaryMap:       *pMap,
+			asserts: func(output string, err error) {
+				assert.Nil(t, err)
+				assert.Equal(t, "True, E, (3,1)", output)
+			},
+		},
+		{
+			name:               "Short trip 2",
+			initialX:           0,
+			initialY:           0,
+			initialOrientation: East,
+			listOfCommands:     "AALAARALA",
+			planetaryMap:       *pMap,
+			asserts: func(output string, err error) {
+				assert.Nil(t, err)
+				assert.Equal(t, "True, N, (3,3)", output)
+			},
+		},
+		{
+			name:               "Long trip 1 out of the map",
+			initialX:           0,
+			initialY:           0,
+			initialOrientation: East,
+			listOfCommands:     "AALAARALAAA",
+			planetaryMap:       *pMap,
+			asserts: func(output string, err error) {
+				assert.Nil(t, err)
+				assert.Equal(t, "False, N, (3,4)", output)
+			},
+		},
+		{
+			name:               "Long trip 1 ",
+			initialX:           0,
+			initialY:           0,
+			initialOrientation: East,
+			listOfCommands:     "AALAARALAA",
+			planetaryMap:       *pMap,
+			asserts: func(output string, err error) {
+				assert.Nil(t, err)
+				assert.Equal(t, "True, N, (3,4)", output)
+			},
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			// given
+			rv := NewRover(tt.planetaryMap)
+
+			// when
+			output, err := rv.Traverse(tt.initialX, tt.initialY, tt.initialOrientation, tt.listOfCommands)
+
+			//then
+			tt.asserts(output, err)
+
+		})
+	}
+}
