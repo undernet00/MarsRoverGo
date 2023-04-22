@@ -6,8 +6,12 @@ import (
 )
 
 func main() {
-	p := planetarymap.NewPlanetaryMap(4, 3)
+	p := planetarymap.NewPlanetaryMap(4, 4)
+	r := planetarymap.NewRover(*p)
 
-	fmt.Println(p)
+	output, err := r.Traverse(0, 3, planetarymap.South, "AAALAAALAAA")
+
+	fmt.Println(output)
+	fmt.Println(err)
 
 }
