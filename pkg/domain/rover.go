@@ -3,7 +3,8 @@ package rover
 import (
 	"errors"
 	"fmt"
-	"github.com/davecgh/go-spew/spew"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"strings"
 )
 
@@ -86,11 +87,11 @@ func (r *Rover) Traverse(initialX int, initialY int, initialOrientation Cardinal
 	}
 
 	if !r.navigationMap.IsValid(initialX, initialY) {
-		return "", errors.New(spew.Sprintf("(%v,%v) are not valid x and y coordinates\n", initialX, initialY))
+		return "", errors.New(fmt.Sprintf("(%v,%v) are not valid x and y coordinates\n", initialX, initialY))
 	}
 
 	if !initialOrientation.IsValid() {
-		return "", errors.New(spew.Sprintf("%v is not a valid initial orientation\n", initialOrientation))
+		return "", errors.New(fmt.Sprintf("%v is not a valid initial orientation\n", initialOrientation))
 	}
 
 	r.currentX = initialX
@@ -168,5 +169,5 @@ func (r *Rover) Advance() error {
 }
 
 func (r *Rover) formatOutput(stillInsideTheMap bool) string {
-	return fmt.Sprintf("%v, %v, (%v,%v)", stillInsideTheMap, r.currentOrientation, r.currentX, r.currentY)
+	return fmt.Sprintf("%v, %v, (%v,%v)", cases.Title(language.English).String(fmt.Sprintf("%v", stillInsideTheMap)), r.currentOrientation, r.currentX, r.currentY)
 }

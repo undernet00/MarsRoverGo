@@ -325,7 +325,29 @@ func TestFormatOutput(t *testing.T) {
 			roverCurrentOrientation: South,
 
 			asserts: func(output string, rover *Rover) {
-				assert.Equal(t, "True, N, (3,2)", rover.formatOutput(false))
+				assert.Equal(t, "True, S, (3,2)", rover.formatOutput(true))
+
+			},
+		}, {
+			name:                    "Standard output 2",
+			planetaryMap:            pMap,
+			roverCurrentX:           6,
+			roverCurrentY:           2,
+			roverCurrentOrientation: North,
+
+			asserts: func(output string, rover *Rover) {
+				assert.Equal(t, "False, N, (6,2)", rover.formatOutput(false))
+
+			},
+		}, {
+			name:                    "Standard output 3",
+			planetaryMap:            pMap,
+			roverCurrentX:           10,
+			roverCurrentY:           2,
+			roverCurrentOrientation: East,
+
+			asserts: func(output string, rover *Rover) {
+				assert.Equal(t, "False, E, (10,2)", rover.formatOutput(false))
 
 			},
 		},
@@ -344,6 +366,178 @@ func TestFormatOutput(t *testing.T) {
 
 			//then
 			tt.asserts(formattedOutput, rv)
+
+		})
+	}
+
+}
+
+func TestAdvance(t *testing.T) {
+
+	pMap := NewPlanetaryMap(4, 5)
+
+	testCases := []struct {
+		name                    string
+		roverCurrentX           int
+		roverCurrentY           int
+		roverCurrentOrientation CardinalPoint
+		asserts                 func(err error)
+	}{
+		{
+			name:                    "From bottom left to in 1",
+			roverCurrentX:           0,
+			roverCurrentY:           0,
+			roverCurrentOrientation: East,
+			asserts: func(err error) {
+				assert.Nil(t, err)
+			},
+		}, {
+			name:                    "From bottom left to in 2",
+			roverCurrentX:           0,
+			roverCurrentY:           0,
+			roverCurrentOrientation: North,
+			asserts: func(err error) {
+				assert.Nil(t, err)
+			},
+		},
+		{
+			name:                    "From bottom left to out 1",
+			roverCurrentX:           0,
+			roverCurrentY:           0,
+			roverCurrentOrientation: West,
+			asserts: func(err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:                    "From bottom left to out 2",
+			roverCurrentX:           0,
+			roverCurrentY:           0,
+			roverCurrentOrientation: South,
+			asserts: func(err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:                    "From bottom right to in 1",
+			roverCurrentX:           3,
+			roverCurrentY:           0,
+			roverCurrentOrientation: West,
+			asserts: func(err error) {
+				assert.Nil(t, err)
+			},
+		}, {
+			name:                    "From bottom right to in 2",
+			roverCurrentX:           3,
+			roverCurrentY:           0,
+			roverCurrentOrientation: North,
+			asserts: func(err error) {
+				assert.Nil(t, err)
+			},
+		},
+		{
+			name:                    "From bottom right to out 1",
+			roverCurrentX:           3,
+			roverCurrentY:           0,
+			roverCurrentOrientation: East,
+			asserts: func(err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:                    "From bottom right to out 2",
+			roverCurrentX:           3,
+			roverCurrentY:           0,
+			roverCurrentOrientation: South,
+			asserts: func(err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:                    "From top left to in 1",
+			roverCurrentX:           0,
+			roverCurrentY:           4,
+			roverCurrentOrientation: East,
+			asserts: func(err error) {
+				assert.Nil(t, err)
+			},
+		}, {
+			name:                    "From top left to in 2",
+			roverCurrentX:           0,
+			roverCurrentY:           4,
+			roverCurrentOrientation: South,
+			asserts: func(err error) {
+				assert.Nil(t, err)
+			},
+		},
+		{
+			name:                    "From top left to out 1",
+			roverCurrentX:           0,
+			roverCurrentY:           4,
+			roverCurrentOrientation: West,
+			asserts: func(err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:                    "From top left to out 2",
+			roverCurrentX:           0,
+			roverCurrentY:           4,
+			roverCurrentOrientation: North,
+			asserts: func(err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:                    "From top right to in 1",
+			roverCurrentX:           3,
+			roverCurrentY:           4,
+			roverCurrentOrientation: West,
+			asserts: func(err error) {
+				assert.Nil(t, err)
+			},
+		}, {
+			name:                    "From top right to in 2",
+			roverCurrentX:           3,
+			roverCurrentY:           4,
+			roverCurrentOrientation: South,
+			asserts: func(err error) {
+				assert.Nil(t, err)
+			},
+		},
+		{
+			name:                    "From top right to out 1",
+			roverCurrentX:           3,
+			roverCurrentY:           4,
+			roverCurrentOrientation: East,
+			asserts: func(err error) {
+				assert.NotNil(t, err)
+			},
+		},
+		{
+			name:                    "From top right to out 2",
+			roverCurrentX:           3,
+			roverCurrentY:           4,
+			roverCurrentOrientation: North,
+			asserts: func(err error) {
+				assert.NotNil(t, err)
+			},
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			// given
+			rv := NewRover(*pMap)
+			rv.currentX = tt.roverCurrentX
+			rv.currentY = tt.roverCurrentY
+			rv.currentOrientation = tt.roverCurrentOrientation
+
+			// when
+			err := rv.Advance()
+
+			//then
+			tt.asserts(err)
 
 		})
 	}
