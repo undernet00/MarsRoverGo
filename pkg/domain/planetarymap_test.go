@@ -10,8 +10,8 @@ func TestMapConstructor(t *testing.T) {
 	pm := NewMap(4, 3)
 
 	assert.NotNil(t, pm, "The new map method returned nil")
-	assert.Equal(t, 4, len(pm.mapGrid), "Expected 4 and got %v", len(pm.mapGrid))
-	assert.Equal(t, 3, len(pm.mapGrid[0]), "Expected 3 and got %v", len(pm.mapGrid[0]))
+	assert.Equal(t, 4, pm.width, "Expected 4 and got %v", pm.width)
+	assert.Equal(t, 3, pm.height, "Expected 3 and got %v", pm.height)
 }
 
 func TestPlanetaryMapConstructor(t *testing.T) {

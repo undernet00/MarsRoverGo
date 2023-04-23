@@ -17,6 +17,7 @@ const (
 	West  CardinalPoint = "W"
 )
 
+// IsValid validates that the value of the CardinalPoint is one of the four possible values.
 func (cp CardinalPoint) IsValid() bool {
 	return cp == North || cp == East || cp == South || cp == West
 }
@@ -29,6 +30,11 @@ const (
 	Right   Command = "R"
 )
 
+// IsValid validates that the value of the Command is one of the tree possible values.
+//
+//	-A for Advance.
+//	-L for Left.
+//	-R for Right.
 func (c Command) IsValid() bool {
 
 	return c == Advance || c == Left || c == Right
@@ -54,28 +60,9 @@ func NewRover(navigationMap PlanetaryMap) *Rover {
 	return &newRover
 }
 
-func convertStringToCommands(listOfCommands string) ([]Command, error) {
-
-	if listOfCommands == "" {
-		return nil, errors.New(fmt.Sprintf("list of commands is empty\n"))
-	}
-
-	commands := strings.Split(listOfCommands, "")
-	validatedCommands := make([]Command, 0)
-
-	for _, v := range commands {
-		command := Command(v)
-		if !command.IsValid() {
-			return nil, errors.New(fmt.Sprintf("%v is not a valid command\n", command))
-		}
-
-		validatedCommands = append(validatedCommands, command)
-	}
-
-	return validatedCommands, nil
-}
-
-func (r *Rover) Traverse(initialX int, initialY int, initialOrientation CardinalPoint, listOfCommands string) (string, error) {
+// SimulateRoute will take an initial x and y position, an initial orientation and a list of commands.
+// Then will try to simulate the rover's travel on the map and return a formatted string with the result.
+func (r *Rover) SimulateRoute(initialX int, initialY int, initialOrientation CardinalPoint, listOfCommands string) (string, error) {
 
 	if r == nil {
 		return "", errors.New("Rover was not initialized\n")
@@ -115,6 +102,7 @@ func (r *Rover) Traverse(initialX int, initialY int, initialOrientation Cardinal
 	return r.formatOutput(true), nil
 }
 
+// TurnRight will change Rover's current orientation to the next CardinalPoint clockwise.
 func (r *Rover) TurnRight() {
 
 	switch r.currentOrientation {
@@ -129,6 +117,7 @@ func (r *Rover) TurnRight() {
 	}
 }
 
+// TurnLeft will change Rover's current orientation to the next CardinalPoint counterclockwise.
 func (r *Rover) TurnLeft() {
 
 	switch r.currentOrientation {
@@ -143,6 +132,7 @@ func (r *Rover) TurnLeft() {
 	}
 }
 
+// Advance will move the Rover's position adding or subtracting 1 to the actual coordinates based on the currentOrientation.
 func (r *Rover) Advance() error {
 	newCoordinateX := r.currentX
 	newCoordinateY := r.currentY
@@ -168,6 +158,32 @@ func (r *Rover) Advance() error {
 	return nil
 }
 
+// convertStringToCommands will convert a string into a list of valid commands Rover commands.
+func convertStringToCommands(listOfCommands string) ([]Command, error) {
+
+	if listOfCommands == "" {
+		return nil, errors.New(fmt.Sprintf("list of commands is empty\n"))
+	}
+
+	commands := strings.Split(listOfCommands, "")
+	validatedCommands := make([]Command, 0)
+
+	for _, v := range commands {
+		command := Command(v)
+		if !command.IsValid() {
+			return nil, errors.New(fmt.Sprintf("%v is not a valid command\n", command))
+		}
+
+		validatedCommands = append(validatedCommands, command)
+	}
+
+	return validatedCommands, nil
+}
+
+// formatOutput will format the return string to the requested specification.
+//
+//	-(True , N, (1,4) when the final destination is within the map's limit.
+//	-(False , N, (1,10) when the final destination falls out the map's limit.
 func (r *Rover) formatOutput(stillInsideTheMap bool) string {
 	return fmt.Sprintf("%v, %v, (%v,%v)", cases.Title(language.English).String(fmt.Sprintf("%v", stillInsideTheMap)), r.currentOrientation, r.currentX, r.currentY)
 }
