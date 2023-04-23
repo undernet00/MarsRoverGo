@@ -667,7 +667,7 @@ func TestNavigate(t *testing.T) {
 			rv := NewRover(tt.planetaryMap)
 
 			// when
-			output, err := rv.SimulateRoute(tt.initialX, tt.initialY, tt.initialOrientation, tt.listOfCommands)
+			output, err := rv.Travel(tt.initialX, tt.initialY, tt.initialOrientation, tt.listOfCommands)
 
 			//then
 			tt.asserts(output, err)

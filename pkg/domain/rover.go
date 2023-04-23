@@ -60,9 +60,9 @@ func NewRover(navigationMap PlanetaryMap) *Rover {
 	return &newRover
 }
 
-// SimulateRoute will take an initial x and y position, an initial orientation and a list of commands.
+// Travel will take an initial x and y position, an initial orientation and a list of commands.
 // Then will try to simulate the rover's travel on the map and return a formatted string with the result.
-func (r *Rover) SimulateRoute(initialX int, initialY int, initialOrientation CardinalPoint, listOfCommands string) (string, error) {
+func (r *Rover) Travel(initialX int, initialY int, initialOrientation CardinalPoint, listOfCommands string) (string, error) {
 
 	if r == nil {
 		return "", errors.New("Rover was not initialized\n")
